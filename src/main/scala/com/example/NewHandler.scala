@@ -6,15 +6,13 @@ import com.amazonaws.services.lambda.runtime.{Context, RequestStreamHandler}
 
 object NewHandler extends RequestStreamHandler {
 
+  val server = new Server(Boot.service)
+
   override def handleRequest(is: InputStream, os: OutputStream, context: Context): Unit = {
     val input = scala.io.Source.fromInputStream(is).mkString
     println("input: ", input)
-    val output = """{
-      "statusCode": 200,
-      "headers": { "headerName": "headerValue"},
-      "body": "bla"
-    }""".filter(_ != '\n')
-    println("output: ", output)
-    os.write(output.getBytes("UTF-8"))
+    val response: String = server.proxy(input, context)
+    println("output: ", response)
+    os.write(response.getBytes("UTF-8"))
   }
 }

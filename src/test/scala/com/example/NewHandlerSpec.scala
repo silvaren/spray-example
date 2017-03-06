@@ -3,16 +3,15 @@ package com.example
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 
 import org.specs2.mutable.Specification
-import com.amazonaws.services.lambda.runtime.{ClientContext, CognitoIdentity, Context, LambdaLogger}
 
 class NewHandlerSpec extends Specification {
 
   "NewHandler" should {
 
-    "return bla" in {
+    "return a!" in {
       val inputString = """{
         "resource": "/{proxy+}",
-        "path": "/bla",
+        "path": "/a",
         "httpMethod": "GET",
         "headers": {
           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -37,7 +36,7 @@ class NewHandlerSpec extends Specification {
         },
         "queryStringParameters": null,
         "pathParameters": {
-          "proxy": "bla"
+          "proxy": "a"
         },
         "stageVariables": null,
         "requestContext": {
@@ -69,7 +68,7 @@ class NewHandlerSpec extends Specification {
       val inputStream = new ByteArrayInputStream(inputString.getBytes())
       val outputStream = new ByteArrayOutputStream()
       NewHandler.handleRequest(inputStream,outputStream,null)
-      outputStream.toString must contain("bla")
+      outputStream.toString must contain("A!")
     }
   }
 }
