@@ -19,9 +19,29 @@ libraryDependencies ++= {
   )
 }
 
+libraryDependencies += "com.amazonaws" % "aws-lambda-java-core" % "1.1.0"
+
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
   case x => MergeStrategy.first
 }
 
 Revolver.settings
+
+retrieveManaged := true
+
+enablePlugins(AwsLambdaPlugin)
+
+deployMethod := Some("DIRECT")
+
+lambdaName := Some("SprayExample")
+
+handlerName := Some("com.example.NewHandler::handleRequest")
+
+awsLambdaMemory := Some(128)
+
+awsLambdaTimeout := Some(30)
+
+roleArn := Some("arn:aws:iam::652271758785:role/service-role/lambda_basic_execution")
+
+region := Some("us-west-2")
