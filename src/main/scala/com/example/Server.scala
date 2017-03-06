@@ -7,9 +7,9 @@ import com.amazonaws.services.lambda.runtime.Context
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class Server (actor: ActorRef) {
+case object AskResponseMessage
 
-  case object AskResponseMessage
+class Server (actor: ActorRef) {
 
   implicit val timeout = Boot.timeout
 

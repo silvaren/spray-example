@@ -17,7 +17,8 @@ class MyServiceActor extends Actor with MyService {
   // other things here, like request stream processing
   // or timeout handling
   def receive = {
-    runRoute(myRoute)
+//    runRoute(myRoute)
+    case AskResponseMessage => sender ! "response asked for!"
   }
 
 }
