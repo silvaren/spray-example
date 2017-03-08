@@ -9,17 +9,19 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class LambdaProxyEvent(resource: String, path: String, httpMethod: String, headers: Map[String,String],
-                            queryStringParameters: Map[String,String], pathParameters: Map[String,String],
-                            stageVariables: Map[String,String], requestContext: RequestContext,
-                            body: String, isBase64Encoded: Boolean)
+import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
-case class RequestContext(accountId: String, resourceId: String, stage: String, requestId: String, identity: String,
+case class LambdaProxyEvent(resource: String, path: String, httpMethod: String, headers: Map[String,String],
+                            queryStringParameters: Option[Map[String,String]], pathParameters: Map[String,String],
+                            stageVariables: Option[Map[String,String]], requestContext: RequestContext,
+                            body: Option[String], isBase64Encoded: Boolean)
+
+case class RequestContext(accountId: String, resourceId: String, stage: String, requestId: String, identity: Identity,
                            resourcePath: String, httpMethod: String, apiId: String)
 
-case class Identity(cognitoIdentityPoolId: String, accountId: String, cognitoIdentityId: String, caller: String,
-                   apiKey: String, sourceIp: String, cognitoAuthenticationType: String,
-                    cognitoAuthenticationProvider: String, userArn: String, userAgent: String, user: String)
+case class Identity(cognitoIdentityPoolId: Option[String], accountId: Option[String], cognitoIdentityId: Option[String], caller: Option[String],
+                   apiKey: Option[String], sourceIp: String, cognitoAuthenticationType: Option[String],
+                    cognitoAuthenticationProvider: Option[String], userArn: Option[String], userAgent: String, user: Option[String])
 
 
 class Server (actor: ActorRef) {
@@ -28,7 +30,8 @@ class Server (actor: ActorRef) {
 
   def proxy(input: String, context: Context): String = {
 
-
+    val event = decode[LambdaProxyEvent](input)
+    println(event)
     val response = (actor ? HttpRequest(HttpMethods.GET,Uri("/a")))
     val responseString = response.map(_.asInstanceOf[HttpResponse]).map(_.entity.asString)
     Await.result(responseString, 30 seconds)

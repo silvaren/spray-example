@@ -11,7 +11,7 @@ libraryDependencies ++= {
   val sprayV = "1.3.3"
   Seq(
     "io.spray"            %%  "spray-can"     % sprayV,
-    "io.spray"            %%  "spray-routing" % sprayV,
+    "io.spray"            %%  "spray-routing-shapeless2" % sprayV,
     "io.spray"            %%  "spray-testkit" % sprayV  % "test",
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test",
@@ -20,6 +20,12 @@ libraryDependencies ++= {
 }
 
 libraryDependencies += "com.amazonaws" % "aws-lambda-java-core" % "1.1.0"
+val circeVersion = "0.7.0"
+libraryDependencies ++= Seq(
+  "io.circe" %% "circe-core",
+  "io.circe" %% "circe-generic",
+  "io.circe" %% "circe-parser"
+).map(_ % circeVersion)
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
