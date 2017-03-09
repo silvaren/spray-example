@@ -9,7 +9,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+import io.circe.generic.auto._, io.circe.parser._
 
 case class LambdaProxyEvent(resource: String, path: String, httpMethod: String, headers: Map[String,String],
                             queryStringParameters: Option[Map[String,String]], pathParameters: Map[String,String],
@@ -30,9 +30,9 @@ class Server (actor: ActorRef) {
 
   def proxy(input: String, context: Context): String = {
 
-    val event = decode[LambdaProxyEvent](input)
+    val event = decode[LambdaProxyEvent](input).right.get
     println(event)
-    val response = (actor ? HttpRequest(HttpMethods.GET,Uri("/a")))
+    val response = (actor ? HttpRequest(HttpMethods.getForKey(event.httpMethod).get,Uri(event.path)))
     val responseString = response.map(_.asInstanceOf[HttpResponse]).map(_.entity.asString)
     Await.result(responseString, 30 seconds)
   }
