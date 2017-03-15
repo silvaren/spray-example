@@ -42,7 +42,8 @@ trait MyService extends HttpService {
     } ~
       path("b") {
         get {
-          respondWithMediaType(`text/html`) { // XML is marshalled to `text/xml` by default, so we simply override here
+          respondWithMediaType(`text/html`) {
+            // XML is marshalled to `text/xml` by default, so we simply override here
             complete {
               <html>
                 <body>
@@ -50,6 +51,13 @@ trait MyService extends HttpService {
                 </body>
               </html>
             }
+          }
+        }
+      } ~
+      path("headers") {
+        get {
+          headerValueByName("X-User-Id") { userId =>
+            complete(s"The user is $userId")
           }
         }
       }
