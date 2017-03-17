@@ -60,5 +60,12 @@ trait MyService extends HttpService {
             complete(s"The user is $userId")
           }
         }
+      } ~
+      path("query") {
+        get {
+          parameters("thisparam") { (thisparam) =>
+            complete(s"The param is '$thisparam'")
+          }
+        }
       }
 }

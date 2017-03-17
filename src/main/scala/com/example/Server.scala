@@ -55,7 +55,7 @@ class Server (actor: ActorRef) {
     val response = (actor ?
       HttpRequest(
         HttpMethods.getForKey(event.httpMethod).get,
-        Uri(event.path),
+        Uri(event.path).withQuery(event.queryStringParameters.getOrElse(Map())),
         event.headers.toList.map(x => RawHeader(x._1, x._2))
       ))
     val responseString = response.map(_.asInstanceOf[HttpResponse]).map(_.entity.asString)
