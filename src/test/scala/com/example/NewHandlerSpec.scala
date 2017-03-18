@@ -237,6 +237,63 @@ class NewHandlerSpec extends Specification {
     "isBase64Encoded": false
   }"""
 
+  val inputStringForPathParams = """{
+    "resource": "/{proxy+}",
+    "path": "/pathparams/pathvalue1/andanother/pathvalue2",
+    "httpMethod": "GET",
+    "headers": {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, sdch, br",
+      "Accept-Language": "en-US,en;q=0.8,fr;q=0.6,pt;q=0.4",
+      "cache-control": "no-cache",
+      "CloudFront-Forwarded-Proto": "https",
+      "CloudFront-Is-Desktop-Viewer": "true",
+      "CloudFront-Is-Mobile-Viewer": "false",
+      "CloudFront-Is-SmartTV-Viewer": "false",
+      "CloudFront-Is-Tablet-Viewer": "false",
+      "CloudFront-Viewer-Country": "BR",
+      "Host": "4phet300bj.execute-api.us-west-2.amazonaws.com",
+      "postman-token": "1ecc6cb1-3ee9-9b73-016c-430964a33d8f",
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+      "Via": "2.0 a0d2f65264713c255448d1a4c773a5fe.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Id": "rAIhsXF_aT4OnQo5iKtPYGFn0_noCswZKKHsjP174XzKiTEUq5AYyg==",
+      "X-Amzn-Trace-Id": "Root=1-58cdac5d-659d156e647eb012431d44f7",
+      "X-Forwarded-For": "201.22.222.58, 205.251.221.84",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+    },
+    "queryStringParameters": null,
+    "pathParameters": {
+      "proxy": "pathparams/pathvalue1/andanother/pathvalue2"
+    },
+    "stageVariables": null,
+    "requestContext": {
+      "accountId": "652271758785",
+      "resourceId": "6wpa7g",
+      "stage": "prod",
+      "requestId": "55252413-0c25-11e7-bfb9-a3549facd2e3",
+      "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": null,
+      "sourceIp": "201.22.222.58",
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+      "user": null
+    },
+      "resourcePath": "/{proxy+}",
+      "httpMethod": "GET",
+      "apiId": "4phet300bj"
+    },
+    "body": null,
+    "isBase64Encoded": false
+  }"""
+
   "NewHandler" should {
 
     "return a! in route A" in {
@@ -265,6 +322,14 @@ class NewHandlerSpec extends Specification {
       val outputStream = new ByteArrayOutputStream()
       NewHandler.handleRequest(inputStream,outputStream,null)
       outputStream.toString must contain("thisvalue")
+    }
+
+    "return values from path param" in {
+      val inputStream = new ByteArrayInputStream(inputStringForQueryParams.getBytes())
+      val outputStream = new ByteArrayOutputStream()
+      NewHandler.handleRequest(inputStream,outputStream,null)
+      outputStream.toString must contain("pathvalue1")
+      outputStream.toString must contain("pathvalue2")
     }
   }
 }
