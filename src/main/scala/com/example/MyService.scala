@@ -67,5 +67,10 @@ trait MyService extends HttpService {
             complete(s"The param is '$thisparam'")
           }
         }
+      } ~
+      path("pathparams" / Segment / "andanother" / IntNumber) {(param1, param2) =>
+        get {
+          complete(s"The first path param is '$param1' and the seconde one is '$param2'")
+        }
       }
 }

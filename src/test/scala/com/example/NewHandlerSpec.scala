@@ -239,7 +239,7 @@ class NewHandlerSpec extends Specification {
 
   val inputStringForPathParams = """{
     "resource": "/{proxy+}",
-    "path": "/pathparams/pathvalue1/andanother/pathvalue2",
+    "path": "/pathparams/pathvalue1/andanother/42",
     "httpMethod": "GET",
     "headers": {
       "Accept": "*/*",
@@ -264,7 +264,7 @@ class NewHandlerSpec extends Specification {
     },
     "queryStringParameters": null,
     "pathParameters": {
-      "proxy": "pathparams/pathvalue1/andanother/pathvalue2"
+      "proxy": "pathparams/pathvalue1/andanother/42"
     },
     "stageVariables": null,
     "requestContext": {
@@ -325,11 +325,11 @@ class NewHandlerSpec extends Specification {
     }
 
     "return values from path param" in {
-      val inputStream = new ByteArrayInputStream(inputStringForQueryParams.getBytes())
+      val inputStream = new ByteArrayInputStream(inputStringForPathParams.getBytes())
       val outputStream = new ByteArrayOutputStream()
       NewHandler.handleRequest(inputStream,outputStream,null)
       outputStream.toString must contain("pathvalue1")
-      outputStream.toString must contain("pathvalue2")
+      outputStream.toString must contain("42")
     }
   }
 }
