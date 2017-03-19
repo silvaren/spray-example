@@ -62,13 +62,19 @@ class NewHandlerSpec extends Specification {
       outputStream.toString must contain("this is a sample file")
     }
 
-
     "return values from x-www-form-urlencoded body" in {
       val inputStream = new ByteArrayInputStream(InputEventStrings.inputStringForXWwwFormUrlencodedBody.getBytes())
       val outputStream = new ByteArrayOutputStream()
       NewHandler.handleRequest(inputStream,outputStream,null)
       outputStream.toString must contain("coolValue")
       outputStream.toString must contain("https://github.com/silvaren")
+    }
+
+    "return values from binary body" in {
+      val inputStream = new ByteArrayInputStream(InputEventStrings.inputStringForBinaryBody.getBytes())
+      val outputStream = new ByteArrayOutputStream()
+      NewHandler.handleRequest(inputStream,outputStream,null)
+      outputStream.toString must contain("this is a sample file")
     }
   }
 }
