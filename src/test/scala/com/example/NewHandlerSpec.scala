@@ -52,5 +52,14 @@ class NewHandlerSpec extends Specification {
       outputStream.toString must contain("coolValue")
       outputStream.toString must contain("anotherValue")
     }
+
+    "return values from form-data body" in {
+      val inputStream = new ByteArrayInputStream(InputEventStrings.inputStringForFormDataBody.getBytes())
+      val outputStream = new ByteArrayOutputStream()
+      NewHandler.handleRequest(inputStream,outputStream,null)
+      outputStream.toString must contain("formValue")
+      outputStream.toString must contain("anotherFormValue")
+      outputStream.toString must contain("this is a sample file")
+    }
   }
 }
