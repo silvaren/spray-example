@@ -4,6 +4,8 @@ import akka.actor.Actor
 import spray.routing._
 import spray.http._
 import MediaTypes._
+import spray.httpx.SprayJsonSupport
+import spray.json._
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -22,9 +24,14 @@ class MyServiceActor extends Actor with MyService {
 
 }
 
+case class CoolClass(coolProperty: String, anotherProperty: String)
+
+trait CoolClassJsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
+  implicit val PortofolioFormats = jsonFormat2(CoolClass)
+}
 
 // this trait defines our service behavior independently from the service actor
-trait MyService extends HttpService {
+trait MyService extends HttpService with CoolClassJsonSupport {
 
   val myRoute =
     path("a") {
@@ -71,6 +78,13 @@ trait MyService extends HttpService {
       path("pathparams" / Segment / "andanother" / IntNumber) {(param1, param2) =>
         get {
           complete(s"The first path param is '$param1' and the second one is '$param2'")
+        }
+      } ~
+      path("jsonbody") {
+        post {
+          entity(as[CoolClass]) { coolClass =>
+            complete(s"The first path param is '${coolClass.coolProperty}' and the second one is '${coolClass.anotherProperty}'")
+          }
         }
       }
 }

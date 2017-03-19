@@ -353,7 +353,7 @@ object InputEventStrings {
 
   val inputStringForJsonBody = """{
     "resource": "/{proxy+}",
-    "path": "/a",
+    "path": "/jsonbody",
     "httpMethod": "POST",
     "headers": {
       "Accept": "*/*",
@@ -380,7 +380,7 @@ object InputEventStrings {
     },
     "queryStringParameters": null,
     "pathParameters": {
-      "proxy": "a"
+      "proxy": "jsonbody"
     },
     "stageVariables": null,
     "requestContext": {
