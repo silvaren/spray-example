@@ -63,14 +63,14 @@ trait MyService extends HttpService {
       } ~
       path("query") {
         get {
-          parameters("thisparam") { (thisparam) =>
-            complete(s"The param is '$thisparam'")
+          parameters("thisparam1", "thisparam2") { (thisparam1, thisparam2) =>
+            complete(s"The first query param is '$thisparam1' and the second one is '$thisparam2'")
           }
         }
       } ~
       path("pathparams" / Segment / "andanother" / IntNumber) {(param1, param2) =>
         get {
-          complete(s"The first path param is '$param1' and the seconde one is '$param2'")
+          complete(s"The first path param is '$param1' and the second one is '$param2'")
         }
       }
 }

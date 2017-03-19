@@ -204,7 +204,8 @@ class NewHandlerSpec extends Specification {
       "X-Forwarded-Proto": "https"
     },
     "queryStringParameters": {
-      "thisparam": "thisvalue"
+      "thisparam1": "thisvalue1",
+      "thisparam2": "thisvalue2"
     },
     "pathParameters": {
       "proxy": "query"
@@ -321,7 +322,8 @@ class NewHandlerSpec extends Specification {
       val inputStream = new ByteArrayInputStream(inputStringForQueryParams.getBytes())
       val outputStream = new ByteArrayOutputStream()
       NewHandler.handleRequest(inputStream,outputStream,null)
-      outputStream.toString must contain("thisvalue")
+      outputStream.toString must contain("thisvalue1")
+      outputStream.toString must contain("thisvalue2")
     }
 
     "return values from path param" in {
