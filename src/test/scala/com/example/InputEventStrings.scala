@@ -412,7 +412,7 @@ object InputEventStrings {
 
   val inputStringForFormDataBody = """{
     "resource": "/{proxy+}",
-    "path": "/a",
+    "path": "/formdata",
     "httpMethod": "POST",
     "headers": {
       "Accept": "*/*",
@@ -439,7 +439,7 @@ object InputEventStrings {
     },
     "queryStringParameters": null,
     "pathParameters": {
-      "proxy": "a"
+      "proxy": "formdata"
     },
     "stageVariables": null,
     "requestContext": {
