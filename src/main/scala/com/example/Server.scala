@@ -48,6 +48,20 @@ class Server (actor: ActorRef) {
 
   implicit val timeout = Boot.timeout
 
+  def getMultiPartFormDataMediaType(contentType: String): MediaType =
+    MediaTypes.`multipart/form-data`.withBoundary(contentType.drop(contentType.indexOf("boundary=") + 9))
+
+  def getEntity(contentType: String, event: LambdaProxyEvent): HttpEntity = {
+    contentType match {
+      case str if str contains "application/json" => event.body.map(body => HttpEntity(ContentTypes.`application/json`, body)).
+        getOrElse(HttpEntity.Empty)
+      case str if str contains "form-data" => event.body.map(body =>
+        HttpEntity(ContentType(getMultiPartFormDataMediaType(str)), body)).getOrElse(HttpEntity.Empty)
+      case _ => event.body.map(body => HttpEntity(ContentTypes.NoContentType, body))
+    }
+
+  }
+
   def proxy(input: String, context: Context): String = {
 
     val event = decode[LambdaProxyEvent](input).right.get
@@ -57,7 +71,8 @@ class Server (actor: ActorRef) {
         HttpMethods.getForKey(event.httpMethod).get,
         Uri(event.path).withQuery(event.queryStringParameters.getOrElse(Map())),
         event.headers.toList.map(x => RawHeader(x._1, x._2)),
-        event.body.map(body => HttpEntity(ContentTypes.`application/json`, body)).getOrElse(HttpEntity.Empty)
+        getEntity(event.headers.toSeq.find(keyValue => keyValue._1 == "content-type").map(_._2).getOrElse("binary"), event)
+//
       )
     val responseString = response.map(_.asInstanceOf[HttpResponse]).map(_.entity.asString)
     Await.result(responseString, 30 seconds)

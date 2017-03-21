@@ -89,8 +89,8 @@ trait MyService extends HttpService with CoolClassJsonSupport {
       } ~
       path("formdata") {
         post {
-          formFields('aFormKey, 'anotherFormKey) { (formKey, anotherFormKey) =>
-            complete(s"The first path param is '${formKey}' and the second one is '${anotherFormKey}'")
+          formFields('aFormKey, 'anotherFormKey, 'aFormFileKey) { (formKey, anotherFormKey, aFormFileKey) =>
+            complete(s"The first path param is '${formKey}' and the second one is '${anotherFormKey}' and $aFormFileKey")
           }
         }
       }
