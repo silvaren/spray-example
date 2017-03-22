@@ -294,7 +294,7 @@ object InputEventStrings {
   val inputStringForXWwwFormUrlencodedBody = """
   {
     "resource": "/{proxy+}",
-    "path": "/a",
+    "path": "/wwwformurlencoded",
     "httpMethod": "POST",
     "headers": {
       "Accept": "*/*",
@@ -321,7 +321,7 @@ object InputEventStrings {
     },
     "queryStringParameters": null,
     "pathParameters": {
-      "proxy": "a"
+      "proxy": "wwwformurlencoded"
     },
     "stageVariables": null,
     "requestContext": {

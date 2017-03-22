@@ -93,5 +93,12 @@ trait MyService extends HttpService with CoolClassJsonSupport {
             complete(s"The first path param is '${formKey}' and the second one is '${anotherFormKey}' and $aFormFileKey")
           }
         }
+      } ~
+      path("wwwformurlencoded") {
+        post {
+          formFields('coolKey, 'urlKey) { (coolKey, urlKey) =>
+            complete(s"The first path param is '${coolKey}' and the second one is '${urlKey}'")
+          }
+        }
       }
 }

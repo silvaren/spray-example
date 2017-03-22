@@ -57,6 +57,8 @@ class Server (actor: ActorRef) {
         getOrElse(HttpEntity.Empty)
       case str if str contains "form-data" => event.body.map(body =>
         HttpEntity(ContentType(getMultiPartFormDataMediaType(str)), body)).getOrElse(HttpEntity.Empty)
+      case str if str contains "application/x-www-form-urlencoded" => event.body.map(body =>
+        HttpEntity(ContentType(MediaTypes.`application/x-www-form-urlencoded`), body)).getOrElse(HttpEntity.Empty)
       case _ => event.body.map(body => HttpEntity(ContentTypes.NoContentType, body))
     }
 
