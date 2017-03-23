@@ -100,5 +100,12 @@ trait MyService extends HttpService with CoolClassJsonSupport {
             complete(s"The first path param is '${coolKey}' and the second one is '${urlKey}'")
           }
         }
+      } ~
+      path("binary") {
+        post {
+          entity(as[String]) { bodyContent =>
+            complete(s"The binary content is '$bodyContent'")
+          }
+        }
       }
 }

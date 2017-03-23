@@ -471,7 +471,7 @@ object InputEventStrings {
 
   val inputStringForBinaryBody = """{
     "resource": "/{proxy+}",
-    "path": "/a",
+    "path": "/binary",
     "httpMethod": "POST",
     "headers": {
       "Accept": "*/*",
@@ -497,7 +497,7 @@ object InputEventStrings {
     },
     "queryStringParameters": null,
     "pathParameters": {
-      "proxy": "a"
+      "proxy": "binary"
     },
     "stageVariables": null,
     "requestContext": {
