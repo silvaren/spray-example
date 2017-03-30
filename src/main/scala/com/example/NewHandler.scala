@@ -13,6 +13,11 @@ object NewHandler extends RequestStreamHandler {
     println("input: ", input)
     val response: String = server.proxy(input, context)
     println("output: ", response)
-    os.write(response.getBytes("UTF-8"))
+    val integrationResponse = """{
+      "statusCode": 200,
+      "headers": {},
+      "body": response
+    }"""
+    os.write(integrationResponse.getBytes("UTF-8"))
   }
 }
