@@ -31,7 +31,8 @@ libraryDependencies ++= Seq(
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-  case x => MergeStrategy.first
+  case n if n.contains("reference.conf") => { println(n); MergeStrategy.concat }
+  case _ => MergeStrategy.first
 }
 
 Revolver.settings
