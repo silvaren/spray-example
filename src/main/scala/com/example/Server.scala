@@ -15,7 +15,7 @@ import spray.http.HttpHeaders.RawHeader
 case class LambdaProxyEvent(resource: String,
                             path: String,
                             httpMethod: String,
-                            headers: Map[String,String],
+                            headers: Option[Map[String,String]],
                             queryStringParameters: Option[Map[String,String]],
                             pathParameters: Map[String,String],
                             stageVariables: Option[Map[String,String]],
@@ -72,9 +72,9 @@ class Server (actor: ActorRef) {
       HttpRequest(
         HttpMethods.getForKey(event.httpMethod).get,
         Uri(event.path).withQuery(event.queryStringParameters.getOrElse(Map())),
-        event.headers.toList.map(x => RawHeader(x._1, x._2)),
-        getEntity(event.headers.toSeq.find(keyValue => keyValue._1 == "content-type").map(_._2).getOrElse("binary"), event)
-//
+        event.headers.getOrElse(Map()).toList.map(x => RawHeader(x._1, x._2)),
+        getEntity(event.headers.getOrElse(Map()).toSeq.find(
+          keyValue => keyValue._1 == "content-type").map(_._2).getOrElse("binary"), event)
       )
     val responseString = response.map(_.asInstanceOf[HttpResponse]).map(_.entity.asString)
     Await.result(responseString, 30 seconds)
