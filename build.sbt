@@ -35,6 +35,20 @@ assemblyMergeStrategy in assembly := {
   case _ => MergeStrategy.first
 }
 
+proguardSettings
+
+ProguardKeys.proguardVersion in Proguard := "5.0"
+//ProguardKeys.options in Proguard += ProguardOptions.keepMain("com.example.Main")
+ProguardKeys.options in Proguard ++= Seq("-dontnote", "-dontwarn", "-ignorewarnings",
+  "-dontskipnonpubliclibraryclasses", "-dontskipnonpubliclibraryclassmembers", "-verbose", "-dontoptimize",
+  "-dontobfuscate",
+  "-keepclasseswithmembers class com.example.** { <methods>; }",
+  "-keepclasseswithmembers class akka.** { <methods>; }",
+  "-keep interface akka.** { <methods>; }")
+ProguardKeys.merge in Proguard := true
+ProguardKeys.mergeStrategies in Proguard += ProguardMerge.append("reference.conf")
+inConfig(Proguard)(javaOptions in ProguardKeys.proguard := Seq("-Xmx2g"))
+
 Revolver.settings
 
 retrieveManaged := true
